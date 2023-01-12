@@ -32,6 +32,19 @@
   "parser": "@babel/eslint-parser",
   "plugins": ["react", "jsx-a11y", "import", "react-hooks"],
   "rules": {
+    "quotes": ["error", "single"],
+    "eol-last": ["error", "always"],
+    "semi": ["error", "never"],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "never",
+        "objects": "never",
+        "imports": "never",
+        "exports": "never",
+        "functions": "never"
+      }
+    ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "jsx-a11y/href-no-hash": "off",
