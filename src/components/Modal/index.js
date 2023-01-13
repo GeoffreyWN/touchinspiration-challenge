@@ -3,7 +3,6 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 
 const Modal = ({ isOpen, closeModal, children }) => {
-
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={closeModal}>
@@ -31,7 +30,7 @@ const Modal = ({ isOpen, closeModal, children }) => {
               leaveTo='opacity-0 scale-95'
             >
               <Dialog.Panel className='w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all'>
-                <div className=''>{children}</div>
+                {children}
               </Dialog.Panel>
             </Transition.Child>
           </div>
