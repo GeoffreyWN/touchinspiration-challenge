@@ -1,10 +1,12 @@
+/* eslint-disable comma-dangle */
 import { createSlice } from '@reduxjs/toolkit'
-import { getMembers } from '../../../api/team'
+import { getMembers, updateMemberDetails } from '../../../api/team'
 
 const initialState = {
   isLoading: true,
   errors: {},
-  members: []
+  members: [],
+  modalOpen: false,
 }
 
 export const teamSlice = createSlice({
@@ -17,26 +19,50 @@ export const teamSlice = createSlice({
 
     setMembers: (state, action) => {
       state.members = action.payload
-    }
-  }
+    },
+    toggleModal: (state, action) => {
+      state.modalOpen = action.payload
+    },
+  },
 })
 
-export const { setMembers, setIsLoading } = teamSlice.actions
+export const { setMembers, setIsLoading, toggleModal } = teamSlice.actions
 
 export const fetchMembers =
-  (loading = true) =>
+  (loading = false) =>
   async (dispatch) => {
     try {
-      dispatch(setIsLoading(loading))
       const { data } = await getMembers()
       dispatch(setMembers(data))
-    } catch (error) {
-      dispatch(setIsLoading(false))
-      console.log(error)
+      dispatch(setIsLoading(loading))
+    } catch (err) {
+      dispatch(setIsLoading(loading))
+      // add error handling logic
+      console.log(err)
+    }
+  }
+
+export const updateMember =
+  ({ memberId, name, occupation, bio, email }) =>
+  async (dispatch) => {
+    try {
+      await updateMemberDetails({
+        memberId,
+        name,
+        occupation,
+        bio,
+        email,
+      })
+      dispatch(fetchMembers())
+      dispatch(toggleModal(false))
+    } catch (err) {
+      // add error handling logic
+      console.log(err)
     }
   }
 
 export const selectMembers = (state) => state.team.members
 export const selectLoading = (state) => state.team.isLoading
+export const selectModalOpen = (state) => state.team.modalOpen
 
 export default teamSlice.reducer
